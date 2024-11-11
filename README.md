@@ -8,89 +8,79 @@ To segment the image using global thresholding, adaptive thresholding and Otsu's
 
 ## Algorithm
 ### Step1:
-Load the necessary packages.
+Load the input image using cv2.imread() and convert it to a grayscale image using cv2.cvtColor() with the color conversion code cv2.COLOR_BGR2GRAY.
+
 ### Step2:
-Read the Image and convert to grayscale.
+Use a fixed threshold value (e.g., 127) for global thresholding with cv2.threshold(). Pixels with intensity above this value are set to maximum intensity (255), and the rest are set to minimum intensity (0).
+
 ### Step3:
-Use Global thresholding to segment the image.
+Use adaptive thresholding, which calculates the threshold for smaller regions of the image. The threshold is calculated dynamically using cv2.adaptiveThreshold() with the ADAPTIVE_THRESH_GAUSSIAN_C method.
+
 ### Step4:
-Use Adaptive thresholding to segment the image.
-## Step5:
-Use Otsu's method to segment the image and display the results.
+Otsu's method automatically finds an optimal threshold value by minimizing the within-class variance. Apply it using cv2.threshold() with the flag cv2.THRESH_OTSU.
+
+### Step5:
+Use plt.imshow() to visualize the grayscale image and the segmented images from global, adaptive, and Otsu's thresholding techniques.
 
 ## Program
-```
-Developed By: PAVITHRA R     
-Reg.NO: 212222230106
-```
-
-```python
-# Load the necessary packages
-import numpy as np
-import matplotlib.pyplot as plt
-import cv2
-
-# Read the Image and convert to grayscale
-image = cv2.imread('GATE.jpg',1)
-image = cv2.cvtColor(image,cv2.COLOR_BGR2RGB)
-image_gray = cv2.imread('GATE.jpg',0)
-
-
-# Use Global thresholding to segment the image
-
-ret,thresh_img1=cv2.threshold(image_gray,86,255,cv2.THRESH_BINARY)
-ret,thresh_img2=cv2.threshold(image_gray,86,255,cv2.THRESH_BINARY_INV)
-ret,thresh_img3=cv2.threshold(image_gray,86,255,cv2.THRESH_TOZERO)
-ret,thresh_img4=cv2.threshold(image_gray,86,255,cv2.THRESH_TOZERO_INV)
-ret,thresh_img5=cv2.threshold(image_gray,100,255,cv2.THRESH_TRUNC)
-
-#Use Adaptive thresholding to segment the image
-
-thresh_img7=cv2.adaptiveThreshold(image_gray,255,cv2.ADAPTIVE_THRESH_MEAN_C,cv2.THRESH_BINARY,11,2)
-thresh_img8=cv2.adaptiveThreshold(image_gray,255,cv2.ADAPTIVE_THRESH_GAUSSIAN_C,cv2.THRESH_BINARY,11,2)
-
-
-# Use Otsu's method to segment the image 
-
-ret,thresh_img6=cv2.threshold(image_gray,0,255,cv2.THRESH_BINARY+cv2.THRESH_OTSU)
-
-titles=["Gray Image","Threshold Image (Binary)","Threshold Image (Binary Inverse)","Threshold Image (To Zero)"
-       ,"Threshold Image (To Zero-Inverse)","Threshold Image (Truncate)","Otsu","Adaptive Threshold (Mean)","Adaptive Threshold (Gaussian)"]
-images=[image_gray,thresh_img1,thresh_img2,thresh_img3,thresh_img4,thresh_img5,thresh_img6,thresh_img7,thresh_img8]
-# Display the results
-
-for i in range(0,9):
-    plt.figure(figsize=(10,10))
-  
-    plt.title("Original Image")
-    plt.imshow(image)
-    plt.axis("off")
-    
-    plt.title(titles[i])
-    plt.imshow(cv2.cvtColor(images[i],cv2.COLOR_BGR2RGB))
-    plt.axis("off")
-    plt.show()
 
 ```
-## Output
+DEVELOPED BY : PAVITHRA R
+REGISTER NO. : 212222230106
+```
+
 
 ### Original Image
-![delhi-pl](https://github.com/user-attachments/assets/4b307b3a-fbab-400c-bed0-07c79730980d)
-### Gray Image
-![image](https://github.com/user-attachments/assets/a246c004-992f-4359-b859-4abb13ad637f)
+```python
+import cv2
+import matplotlib.pyplot as plt
+
+image = cv2.imread('gray.jpg')
+gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+
+plt.imshow(gray_image, cmap='gray')
+plt.title('Grayscale Image')
+plt.xticks([]), plt.yticks([])
+plt.show()
+```
+### Output
+![Screenshot 2024-10-26 114429](https://github.com/user-attachments/assets/c632ed45-4679-4b2d-a20d-dcc455a43364)
 
 ### Global Thresholding
-![image](https://github.com/user-attachments/assets/d5bffb30-01be-4d73-a2e3-119887de689f)
-![image](https://github.com/user-attachments/assets/8c9b1fe6-4ce9-4ff5-a227-7d263c47c04a)
-![image](https://github.com/user-attachments/assets/a4b4a8eb-0de5-4f60-8738-9a20780435c6)
-![image](https://github.com/user-attachments/assets/e2b8a98c-567c-44ff-afac-a7f39ab4b152)
+```python
+ret_global, th_global = cv2.threshold(gray_image, 127, 255, cv2.THRESH_BINARY)
+
+plt.imshow(th_global, cmap='gray')
+plt.title('Global Thresholding (v=127)')
+plt.xticks([]), plt.yticks([])
+plt.show()
+```
+### Output
+![Screenshot 2024-10-26 114438](https://github.com/user-attachments/assets/fba309e2-5328-44b2-a8c4-defc5128022a)
 
 ### Adaptive Thresholding
-![image](https://github.com/user-attachments/assets/35cef6b2-3a39-4928-bb3a-0f56bef797fa)
-![image](https://github.com/user-attachments/assets/e4fca39e-7dca-43b6-a228-d8e00f2169d2)
+```python
+thresh_adaptive = cv2.adaptiveThreshold(gray_image, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C,cv2.THRESH_BINARY, 11, 2)
+
+plt.imshow(thresh_adaptive, cmap='gray')
+plt.title('Adaptive Gaussian Thresholding')
+plt.xticks([]), plt.yticks([])
+plt.show()
+```
+### Output
+![Screenshot 2024-10-26 114448](https://github.com/user-attachments/assets/3b92dcf2-3c67-4c75-bbad-c734826bac08)
 
 ### Optimum Global Thesholding using Otsu's Method
-![image](https://github.com/user-attachments/assets/5e33e7f4-81c2-401a-a171-b0bad663fb67)
+```python
+ret_otsu, th_otsu = cv2.threshold(gray_image, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+
+plt.imshow(th_otsu, cmap='gray')
+plt.title("Otsu's Thresholding")
+plt.xticks([]), plt.yticks([])
+plt.show()
+```
+### Output
+![Screenshot 2024-10-26 114456](https://github.com/user-attachments/assets/91225680-88a3-47a8-b9a1-84306f996469)
 
 ## Result
 Thus the images are segmented using global thresholding, adaptive thresholding and optimum global thresholding using python and OpenCV.
