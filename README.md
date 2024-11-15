@@ -1,4 +1,6 @@
-# THRESHOLDING
+## EX-09 Thresholding
+## DATE : 10-10-2024
+
 ## Aim
 To segment the image using global thresholding, adaptive thresholding and Otsu's thresholding using python and OpenCV.
 
