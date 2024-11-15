@@ -1,4 +1,4 @@
-## EX-09 Thresholding
+## EX-08 Thresholding
 ## DATE : 10-10-2024
 
 ## Aim
